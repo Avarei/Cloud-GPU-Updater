@@ -31,7 +31,8 @@ function driverVersion {
     #Queries WMI to request the driver version, and formats it to match that of a NVIDIA Driver version number (NNN.NN) 
     if ($GPU.Device_ID -ne "DEV_7362") {
         Try {
-            (Get-WmiObject Win32_PnPSignedDriver | where {($_.DeviceName -like "*nvidia*") -and $_.DeviceClass -like "Display"} | Select-Object -ExpandProperty DriverVersion).substring(7,6).replace('.','').Insert(3,'.')
+            $DriverVersion = Get-WmiObject Win32_PnPSignedDriver | where {($_.DeviceName -like "*nvidia*") -and $_.DeviceClass -like "Display"} | Select-Object -ExpandProperty DriverVersion
+            $DriverVersion.substring($DriverVersion.Length - 6).replace('.','').Insert(3,'.')
             }
         Catch {
             }
